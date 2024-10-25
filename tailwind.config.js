@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const primeui = require('tailwindcss-primeui')
+
+module.exports = {
+  darkMode: ['class', '[data-theme="dark"]'],
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
@@ -9,5 +12,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [import('flowbite/plugin')],
+  plugins: [primeui],
 }
