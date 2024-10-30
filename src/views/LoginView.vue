@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center min-h-[80vh]">
+  <div class="flex justify-center items-center">
     <div class="card w-full max-w-md">
       <h2 class="text-2xl font-bold mb-6 text-center">{{ $t('auth.login') }}</h2>
       <form @submit.prevent="handleSubmit">

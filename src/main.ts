@@ -14,6 +14,8 @@ import { registerPlugin } from './helpers/register-plugin';
 import Sidebar from 'primevue/sidebar';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
+import Card from 'primevue/card';
+import Tag from 'primevue/tag';
 
 const app = createApp(App);
 
@@ -27,5 +29,7 @@ app.use(ToastService);
 app.component('Sidebar', Sidebar);
 app.component('Menu', Menu);
 app.component('Button', Button);
+app.component('Card', Card);
+app.component('Tag', Tag);
 
 app.mount('#app');

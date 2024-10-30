@@ -1,11 +1,19 @@
 @import './togglebutton';
 
 .p-selectbutton {
-  @apply inline-flex select-none rounded-md;
+  @apply inline-flex select-none;
 }
 
 .p-selectbutton .p-togglebutton {
-  @apply rounded-none border-y border-r border-l-0;
+  @apply rounded-none border-y border-r border-l-0 flex-1;
+}
+
+.p-togglebutton.p-togglebutton-checked::before {
+  border-radius: 30px;
+  left: 1.5px;
+  top: 1.5px;
+  height: calc(100% - 3px);
+  width: calc(100% - 3px);
 }
 
 .p-selectbutton .p-togglebutton:focus-visible {
@@ -13,11 +21,11 @@
 }
 
 .p-selectbutton .p-togglebutton:first-child {
-  @apply border-l rounded-l-md;
+  @apply border-l rounded-l-[30px];
 }
 
 .p-selectbutton .p-togglebutton:last-child {
-  @apply rounded-r-md;
+  @apply rounded-r-[30px];
 }
 
 .p-selectbutton.p-invalid {

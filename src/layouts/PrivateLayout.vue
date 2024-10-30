@@ -1,64 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { toggleTheme } from '../utils/themeToggle';
-import { useI18n } from 'vue-i18n';
-import { RouterLink } from 'vue-router';
-import Toast from 'primevue/toast';
-import router from '@/router';
-import { useAuth } from '@/composables/useAuth';
 import { useNavigation } from '@/composables/useNavigation';
-
-const { t, locale } = useI18n();
-
-const toggleLanguage = () => {
-  locale.value = locale.value === 'ru' ? 'en' : 'ru';
-};
-
-const { navItems } = useNavigation();
-
-const isDarkTheme = ref(false);
-
-onMounted(() => {
-  isDarkTheme.value = document.documentElement.classList.contains('dark');
-});
-
-const handleToggleTheme = () => {
-  toggleTheme();
-  isDarkTheme.value = !isDarkTheme.value;
-};
-
-const { logout } = useAuth();
-
-const handleLogout = async () => {
-  await logout();
-  router.push('/login');
-};
+import SideNavigation from '@/components/SideNavigation.vue';
+import Toast from 'primevue/toast';
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-full flex">
     <Toast />
-    <header class="flex justify-between items-center p-4">
-      <nav class="flex gap-4">
-        <RouterLink
-          v-for="item in navItems"
-          :key="item.path"
-          :to="item.path"
-          class="transition-colors duration-300 hover:text-[var(--p-primary-color)]"
-          active-class="text-[var(--p-primary-color)]"
-        >
-          {{ item.name }}
-        </RouterLink>
-      </nav>
-      <div class="flex gap-2">
-        <Button :icon="isDarkTheme ? 'pi pi-moon' : 'pi pi-sun'" @click="handleToggleTheme" />
-        <Button icon="pi pi-globe" @click="toggleLanguage()" />
-        <Button icon="pi pi-sign-out" @click="handleLogout" />
-      </div>
-    </header>
-
-    <main class="flex-grow px-4">
-      <RouterView />
-    </main>
+    <SideNavigation />
+    <RouterView />
   </div>
 </template>
