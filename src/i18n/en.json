@@ -2,7 +2,10 @@
   "pages": {
     "home": "Home",
     "form": "Form",
-    "formResult": "Form Submission Result"
+    "formResult": "Form Submission Result",
+    "formList": "Form List",
+    "formCreate": "Create Form",
+    "formResultDetails": "Form Result Details"
   },
   "toggleLanguage": "Change Language",
   "validations": {
@@ -93,5 +96,9 @@
     "registerSuccess": "Registration successful",
     "registerError": "Registration failed. Please try again",
     "rememberMe": "Remember me"
+  },
+  "routes": {
+    "login": "Login",
+    "register": "Register"
   }
 }

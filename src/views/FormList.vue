@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import Button from 'primevue/button';
-import { useI18n } from 'vue-i18n';
 import { useFormStorage } from '@/composables/useFormStorage';
+import { PROTECTED_ROUTES } from '@/router/routes';
 
-const { t } = useI18n();
 const router = useRouter();
 const { getSubmittedForms } = useFormStorage();
 
@@ -28,7 +27,7 @@ const actionBodyTemplate = (slotProps: any) => {
 
 const editForm = (index: number) => {
   router.push({
-    name: 'FormResultDetails',
+    name: PROTECTED_ROUTES.FORM_RESULT,
     params: { id: index },
     query: { isViewMode: 'false' },
   });

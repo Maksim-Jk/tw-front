@@ -11,6 +11,9 @@ import router from './router';
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import { registerPlugin } from './helpers/register-plugin';
+import Sidebar from 'primevue/sidebar';
+import Menu from 'primevue/menu';
+import Button from 'primevue/button';
 
 const app = createApp(App);
 
@@ -21,5 +24,8 @@ app.use(PrimeVue, {
   theme: 'none',
 });
 app.use(ToastService);
+app.component('Sidebar', Sidebar);
+app.component('Menu', Menu);
+app.component('Button', Button);
 
 app.mount('#app');

@@ -6,6 +6,7 @@ import { RouterLink } from 'vue-router';
 import Toast from 'primevue/toast';
 import router from '@/router';
 import { useAuth } from '@/composables/useAuth';
+import { useNavigation } from '@/composables/useNavigation';
 
 const { t, locale } = useI18n();
 
@@ -13,14 +14,7 @@ const toggleLanguage = () => {
   locale.value = locale.value === 'ru' ? 'en' : 'ru';
 };
 
-const navItems =
-  router.options.routes
-    .find((route) => route.meta?.requiresAuth)
-    ?.children?.filter((route) => route.meta?.showInNav)
-    .map((route) => ({
-      path: route.path,
-      name: t(route.meta.title as string),
-    })) || [];
+const { navItems } = useNavigation();
 
 const isDarkTheme = ref(false);
 

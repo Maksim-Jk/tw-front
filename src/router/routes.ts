@@ -1,5 +1,6 @@
 export enum PROTECTED_ROUTES {
-  FORM = '/form',
+  FORM_LIST = '/form-list',
+  FORM_CREATE = '/form-create',
   FORM_RESULT = '/form-result/:id',
 }
 
@@ -8,27 +9,42 @@ export enum ROUTES {
   REGISTER = '/register',
 }
 
-export const DEFAULT_ROUTE = PROTECTED_ROUTES.FORM;
+export const DEFAULT_ROUTE = PROTECTED_ROUTES.FORM_LIST;
 
 export const protectedRoutes = [
   {
     path: '/form',
-    name: PROTECTED_ROUTES.FORM,
-    component: () => import('@/views/FormView.vue'),
-    meta: {
-      title: 'pages.form',
-      showInNav: true,
-      requiresAuth: true,
-    },
-  },
-  {
-    path: '/form-result/:id',
-    name: PROTECTED_ROUTES.FORM_RESULT,
-    component: () => import('@/views/FormResult.vue'),
-    meta: {
-      title: 'formResultDetails',
-      requiresAuth: true,
-    },
+    children: [
+      {
+        path: 'list',
+        name: PROTECTED_ROUTES.FORM_LIST,
+        component: () => import('@/views/FormList.vue'),
+        meta: {
+          title: 'pages.formList',
+          showInNav: true,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'create',
+        name: PROTECTED_ROUTES.FORM_CREATE,
+        component: () => import('@/views/FormCreate.vue'),
+        meta: {
+          title: 'pages.formCreate',
+          showInNav: true,
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'result/:id',
+        name: PROTECTED_ROUTES.FORM_RESULT,
+        component: () => import('@/views/FormResult.vue'),
+        meta: {
+          title: 'pages.formResultDetails',
+          requiresAuth: true,
+        },
+      },
+    ],
   },
 ];
 

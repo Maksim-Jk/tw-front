@@ -2,7 +2,10 @@
   "pages": {
     "home": "Главная",
     "form": "Форма",
-    "formResult": "Результат отправки формы"
+    "formResult": "Результат отправки формы",
+    "formList": "Список форм",
+    "formCreate": "Создать форму",
+    "formResultDetails": "Детали результата формы"
   },
   "toggleLanguage": "Сменить язык",
   "validations": {
@@ -93,5 +96,9 @@
     "registerSuccess": "Регистрация выполнена успешно",
     "registerError": "Ошибка регистрации. Попробуйте снова",
     "rememberMe": "Запомнить меня"
+  },
+  "routes": {
+    "login": "Вход",
+    "register": "Регистрация"
   }
 }

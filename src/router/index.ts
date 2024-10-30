@@ -18,6 +18,10 @@ const router = createRouter({
       component: () => import('@/layouts/PublicLayout.vue'),
       children: [...publicRoutes],
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: { name: DEFAULT_ROUTE },
+    },
   ],
 });
 
