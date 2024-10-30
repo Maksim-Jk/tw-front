@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-1">
     <FormField v-bind="getFieldProps(v$.jobInfo, 'jobTitle')">
       <template #default="{ inputClass }">
         <InputGroup>
@@ -8,6 +8,7 @@
             v-model="jobInfo.jobTitle"
             :placeholder="t('form.placeholders.jobTitle')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -21,6 +22,7 @@
             v-model="jobInfo.company"
             :placeholder="t('form.placeholders.company')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -34,6 +36,7 @@
             v-model="jobInfo.startDate"
             :placeholder="t('form.placeholders.startDate')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -47,6 +50,7 @@
             v-model="jobInfo.location"
             :placeholder="t('form.placeholders.location')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -63,6 +67,7 @@
             currency="RUB"
             locale="ru-RU"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -78,6 +83,7 @@
             :placeholder="t('form.placeholders.responsibilities')"
             rows="3"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -86,20 +92,21 @@
 </template>
 
 <script lang="ts" setup>
-import { useFormStore } from '@/stores/form'
-import { getFieldProps } from '@/utils/formUtils'
-import { useI18n } from 'vue-i18n'
+import { useFormStore } from '@/stores/form';
+import { getFieldProps } from '@/utils/formUtils';
+import { useI18n } from 'vue-i18n';
 
 type ValidationObject = {
   [key: string]: {
-    [field: string]: any
-  }
-}
+    [field: string]: any;
+  };
+};
 
 const props = defineProps<{
-  v$: ValidationObject
-}>()
+  v$: ValidationObject;
+  isViewMode: boolean;
+}>();
 
-const { t } = useI18n()
-const { jobInfo } = useFormStore()
+const { t } = useI18n();
+const { jobInfo } = useFormStore();
 </script>

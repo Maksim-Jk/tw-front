@@ -1,0 +1,97 @@
+{
+  "pages": {
+    "home": "Home",
+    "form": "Form",
+    "formResult": "Form Submission Result"
+  },
+  "toggleLanguage": "Change Language",
+  "validations": {
+    "required": "This field is required",
+    "minLength": "Minimum length: {min} characters",
+    "maxLength": "Maximum length: {max} characters",
+    "minValue": "Minimum value: {min}",
+    "numeric": "Please enter a numeric value",
+    "email": "Please enter a valid email address",
+    "phoneValidator": "Please enter a valid Russian phone number",
+    "dateInPast": "Date cannot be in the future",
+    "sameAs": "Value must match {property}"
+  },
+  "form": {
+    "tabs": {
+      "personalInfo": {
+        "title": "Personal Information",
+        "content": "Enter your personal information"
+      },
+      "jobInfo": {
+        "title": "Job Information",
+        "content": "Enter your job information"
+      }
+    },
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "phone": "Phone",
+      "email": "Email",
+      "jobTitle": "Job Title",
+      "company": "Company",
+      "startDate": "Start Date",
+      "location": "Location",
+      "salary": "Salary",
+      "responsibilities": "Responsibilities"
+    },
+    "placeholders": {
+      "firstName": "Enter first name",
+      "lastName": "Enter last name",
+      "phone": "Enter phone number",
+      "email": "Enter email",
+      "jobTitle": "Enter job title",
+      "company": "Enter company name",
+      "startDate": "Choose start date",
+      "location": "Enter location",
+      "salary": "Enter salary",
+      "responsibilities": "Describe responsibilities"
+    },
+    "submit": "Submit",
+    "submitSuccessTitle": "Successfully Submitted",
+    "submitSuccessMessage": "Your form has been successfully submitted.",
+    "submitErrorTitle": "Submission Error",
+    "submitErrorMessage": "Please check the form and correct the errors."
+  },
+  "formResult": {
+    "title": "Form Submission Result",
+    "noData": "No data to display",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "actions": "Actions",
+    "view": "View",
+    "id": "ID",
+    "savedAt": "Saved At",
+    "field": "Field",
+    "value": "Value",
+    "backToList": "Back to List",
+    "edit": "Edit"
+  },
+  "home": {
+    "title": "Home Page",
+    "submittedForms": "Submitted Forms",
+    "noSubmittedForms": "No submitted forms",
+    "createNewForm": "Create New Form"
+  },
+  "auth": {
+    "emailPlaceholder": "Enter email",
+    "passwordPlaceholder": "Enter password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "login": "Login",
+    "register": "Register",
+    "noAccount": "No account? Sign up",
+    "haveAccount": "Already have an account? Login",
+    "loginSuccess": "Login successful",
+    "loginError": "Login failed. Please check your credentials and try again",
+    "registerSuccess": "Registration successful",
+    "registerError": "Registration failed. Please try again",
+    "rememberMe": "Remember me"
+  }
+}

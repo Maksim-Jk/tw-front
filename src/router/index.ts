@@ -1,23 +1,39 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import { useAuth } from '@/composables/useAuth';
+import { DEFAULT_ROUTE, ROUTES, protectedRoutes, publicRoutes } from './routes';
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      component: () => import('@/layouts/PrivateLayout.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+      children: [...protectedRoutes],
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/',
+      component: () => import('@/layouts/PublicLayout.vue'),
+      children: [...publicRoutes],
     },
   ],
-})
+});
 
-export default router
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuth();
+  const isAuthenticated = await auth.getCurrentUser();
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next(ROUTES.LOGIN);
+  }
+
+  if ((to.name === ROUTES.LOGIN || to.name === ROUTES.REGISTER) && isAuthenticated) {
+    next(DEFAULT_ROUTE);
+  }
+
+  next();
+});
+
+export default router;

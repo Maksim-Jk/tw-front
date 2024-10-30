@@ -1,24 +1,25 @@
-import './assets/tailwind.css'
-import './style.css'
+import './assets/tailwind.css';
+import './style.css';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { i18n } from './locales/i18n'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import { I18nPlugin } from './plugins/i18n/i18n.plugin';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
+import router from './router';
 
-import PrimeVue from 'primevue/config'
-import ToastService from 'primevue/toastservice'
+import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
+import { registerPlugin } from './helpers/register-plugin';
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(createPinia())
-app.use(router)
-app.use(i18n)
+app.use(createPinia());
+app.use(router);
+registerPlugin(app, I18nPlugin, {});
 app.use(PrimeVue, {
   theme: 'none',
-})
-app.use(ToastService)
+});
+app.use(ToastService);
 
-app.mount('#app')
+app.mount('#app');

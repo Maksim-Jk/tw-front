@@ -1,0 +1,97 @@
+{
+  "pages": {
+    "home": "Главная",
+    "form": "Форма",
+    "formResult": "Результат отправки формы"
+  },
+  "toggleLanguage": "Сменить язык",
+  "validations": {
+    "required": "Это поле обязательно для заполнения",
+    "minLength": "Минимальная длина: {min} символов",
+    "maxLength": "Максимальная длина: {max} символов",
+    "minValue": "Минимальное значение: {min}",
+    "numeric": "Введите числовое значение",
+    "email": "Введите корректный email адрес",
+    "phoneValidator": "Введите корректный российский номер телефона",
+    "dateInPast": "Дата не может быть в будущем",
+    "sameAs": "Значение должно совпадать с {property}"
+  },
+  "form": {
+    "tabs": {
+      "personalInfo": {
+        "title": "Персональная информация",
+        "content": "Введите вашу личную информацию"
+      },
+      "jobInfo": {
+        "title": "Информация о работе",
+        "content": "Введите информацию о вашей работе"
+      }
+    },
+    "fields": {
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "phone": "Телефон",
+      "email": "Email",
+      "jobTitle": "Должность",
+      "company": "Компания",
+      "startDate": "Дата начала работы",
+      "location": "Местоположение",
+      "salary": "Зарплата",
+      "responsibilities": "Обязанности"
+    },
+    "placeholders": {
+      "firstName": "Введите имя",
+      "lastName": "Введите фамилию",
+      "phone": "Введите номер телефона",
+      "email": "Введите email",
+      "jobTitle": "Введите должность",
+      "company": "Введите название компании",
+      "startDate": "Выберите дату начала работы",
+      "location": "Введите местоположение",
+      "salary": "Введите зарплату",
+      "responsibilities": "Опишите обязанности"
+    },
+    "submit": "Отправить",
+    "submitSuccessTitle": "Успешно отправлено",
+    "submitSuccessMessage": "Ваша форма была успешно отправлена.",
+    "submitErrorTitle": "Ошибка отправки",
+    "submitErrorMessage": "Пожалуйста, проверьте форму и исправьте ошибки."
+  },
+  "formResult": {
+    "title": "Результат отправки формы",
+    "noData": "Нет данных для отображения",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "email": "Email",
+    "actions": "Действия",
+    "view": "Просмотр",
+    "id": "ID",
+    "savedAt": "Дата сохранения",
+    "field": "Поле",
+    "value": "Значение",
+    "backToList": "Вернуться к списку",
+    "edit": "Редактировать"
+  },
+  "home": {
+    "title": "Главная страница",
+    "submittedForms": "Отправленные формы",
+    "noSubmittedForms": "Нет отправленных форм",
+    "createNewForm": "Создать новую форму"
+  },
+  "auth": {
+    "emailPlaceholder": "Введите email",
+    "passwordPlaceholder": "Введите пароль",
+    "confirmPasswordPlaceholder": "Подтвердите пароль",
+    "loginButton": "Войти",
+    "registerButton": "Зарегистрироваться",
+    "login": "Вход",
+    "register": "Регистрация",
+    "noAccount": "Нет аккаунта? Зарегистрируйтесь",
+    "haveAccount": "Уже есть аккаунт? Войдите",
+    "loginSuccess": "Вход выполнен успешно",
+    "loginError": "Ошибка входа. Проверьте данные и попробуйте снова",
+    "registerSuccess": "Регистрация выполнена успешно",
+    "registerError": "Ошибка регистрации. Попробуйте снова",
+    "rememberMe": "Запомнить меня"
+  }
+}

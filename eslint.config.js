@@ -1,7 +1,7 @@
-import pluginVue from 'eslint-plugin-vue'
-import vueTsEslintConfig from '@vue/eslint-config-typescript'
-import pluginVitest from '@vitest/eslint-plugin'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import pluginVue from 'eslint-plugin-vue';
+import vueTsEslintConfig from '@vue/eslint-config-typescript';
+import pluginVitest from '@vitest/eslint-plugin';
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
 
 export default [
   {
@@ -26,6 +26,11 @@ export default [
   {
     rules: {
       '@typescript-eslint/no-require-imports': 'false',
+      'vue/multi-word-component-names': 'error',
+      'vue/no-unused-components': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'vue/component-name-in-template-casing': ['error', 'PascalCase'],
     },
   },
-]
+];

@@ -3,38 +3,33 @@
     <form @submit.prevent="handleSubmit">
       <Tabs value="0">
         <TabList>
-          <Tab
-            v-for="tab in tabs"
-            :key="tab.title"
-            :value="tab.value"
-            class="flex items-center"
-          >
+          <Tab v-for="tab in tabs" :key="tab.title" :value="tab.value" class="flex items-center">
             {{ $t(tab.title) }}
             <span
-              v-if="hasErrors(tab.value)"
-              class="ml-2 mt-1 w-1.5 h-1.5 bg-red-500 rounded-full flex-shrink-0"
+              v-if="!isViewMode && hasErrors(tab.value)"
+              class="ml-3 mt-1 w-1.5 h-1.5 bg-red-500 rounded-full flex-shrink-0 animate-pulse"
             ></span>
           </Tab>
         </TabList>
         <TabPanels class="px-0">
           <TabPanel v-for="tab in tabs" :key="tab.content" :value="tab.value">
-            <component v-if="tab.component" :is="tab.component" :v$="v$" />
+            <component v-if="tab.component" :is="tab.component" :v$="v$" :isViewMode="isViewMode" />
           </TabPanel>
         </TabPanels>
       </Tabs>
       <div class="mt-4">
-        <Button type="submit" class="btn btn-primary">{{
-          $t('form.submit')
-        }}</Button>
+        <Button v-if="!isViewMode" type="submit" class="btn btn-primary">
+          {{ $t('form.submit') }}
+        </Button>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import PersonInfo from './components/PersonInfo.vue'
-import PersonJobInfo from './components/PersonJobInfo.vue'
-import { useVuelidate } from '@vuelidate/core'
+import PersonInfo from './components/PersonInfo.vue';
+import PersonJobInfo from './components/PersonJobInfo.vue';
+import { useVuelidate } from '@vuelidate/core';
 import {
   required,
   minLength,
@@ -44,12 +39,23 @@ import {
   email,
   phoneValidator,
   dateInPast,
-} from '@/utils/i18n-validators'
-import { useFormStore } from '@/stores/form'
-import { useToast } from 'primevue/usetoast'
-import { useI18n } from 'vue-i18n'
+} from '@/utils/i18n-validators';
+import { useFormStore } from '@/stores/form';
+import { useToast } from 'primevue/usetoast';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { ref, computed, markRaw } from 'vue';
+import { useFormStorage } from '@/composables/useFormStorage';
 
-const formStore = useFormStore()
+const formStore = useFormStore();
+const router = useRouter();
+
+const props = defineProps({
+  isViewMode: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const tabs = ref([
   {
@@ -62,7 +68,7 @@ const tabs = ref([
     value: '1',
     component: markRaw(PersonJobInfo),
   },
-])
+]);
 
 const rules = computed(() => ({
   personInfo: {
@@ -109,51 +115,62 @@ const rules = computed(() => ({
       minLength: minLength(20),
     },
   },
-}))
+}));
 
-const v$ = useVuelidate(rules, formStore.$state)
-const { t } = useI18n()
+const v$ = useVuelidate(rules, formStore.$state);
+const { t } = useI18n();
 
-const toast = useToast()
+const toast = useToast();
+
+const { saveForm } = useFormStorage();
 
 const handleSubmit = async () => {
-  const isValid = await v$.value.$validate()
+  if (props.isViewMode) return;
+
+  const isValid = await v$.value.$validate();
   if (isValid) {
-    console.log('Form is valid', formStore.formData)
-    // Используем PrimeVue toast для успешного сообщения
+    console.log('Form is valid', {
+      ...formStore.personInfo,
+      ...formStore.jobInfo,
+    });
+
+    saveForm({
+      personInfo: formStore.personInfo,
+      jobInfo: formStore.jobInfo,
+    });
+
     toast.add({
       severity: 'success',
       summary: t('form.submitSuccessTitle'),
       detail: t('form.submitSuccessMessage'),
       life: 3000,
-    })
+    });
+
+    router.push({ name: 'home' });
   } else {
-    // Используем PrimeVue toast для сообщения об ошибке
     toast.add({
       severity: 'error',
       summary: t('form.submitErrorTitle'),
       detail: t('form.submitErrorMessage'),
       life: 3000,
-    })
+    });
   }
-}
+};
 
-const hasErrors = tabValue => {
+const hasErrors = (tabValue) => {
+  if (props.isViewMode) return false;
+
   if (tabValue === '0') {
-    return v$.value.personInfo.$error
+    return v$.value.personInfo.$error;
   } else if (tabValue === '1') {
-    return v$.value.jobInfo.$error
+    return v$.value.jobInfo.$error;
   }
-  return false
-}
+  return false;
+};
 </script>
 
 <style scoped>
-.tab-with-indicator {
-  @apply flex items-center;
-}
-
-.error-indicator {
-  @apply ml-2 mt-1 w-1.5 h-1.5 bg-red-500 rounded-full flex-shrink-0;
+.p-tab.p-tab-active {
+  @apply text-[var(--p-primary-color)];
 }
 </style>

@@ -8,6 +8,7 @@
             v-model="personInfo.firstName"
             :placeholder="t('form.placeholders.firstName')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -21,6 +22,7 @@
             v-model="personInfo.lastName"
             :placeholder="t('form.placeholders.lastName')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -34,6 +36,7 @@
             v-model="personInfo.phone"
             :placeholder="t('form.placeholders.phone')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -47,6 +50,7 @@
             v-model="personInfo.email"
             :placeholder="t('form.placeholders.email')"
             :class="inputClass"
+            :disabled="isViewMode"
           />
         </InputGroup>
       </template>
@@ -55,14 +59,15 @@
 </template>
 
 <script lang="ts" setup>
-import { useFormStore } from '@/stores/form'
-import { getFieldProps } from '@/utils/formUtils'
-import { useI18n } from 'vue-i18n'
+import { useFormStore } from '@/stores/form';
+import { getFieldProps } from '@/utils/formUtils';
+import { useI18n } from 'vue-i18n';
 
-const props = defineProps({
+defineProps({
   v$: { type: Object, required: true },
-})
+  isViewMode: { type: Boolean, required: true },
+});
 
-const { t } = useI18n()
-const { personInfo } = useFormStore()
+const { t } = useI18n();
+const { personInfo } = useFormStore();
 </script>
