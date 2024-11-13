@@ -1,4 +1,4 @@
-export function toggleTheme() {
+export function toggleTheme(): void {
   const root = document.documentElement;
   const currentTheme = root.getAttribute('data-theme');
   const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -7,7 +7,7 @@ export function toggleTheme() {
   localStorage.setItem('theme', newTheme);
 }
 
-function setInitialTheme() {
+export function setInitialTheme(): void {
   const savedTheme = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 

@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center">
     <div class="card w-full max-w-md">
-      <h2 class="text-2xl font-bold mb-6 text-center">{{ $t('auth.login') }}</h2>
+      <h2 class="text-2xl font-bold mb-6 text-center">{{ $t('auth.register') }}</h2>
       <form @submit.prevent="handleSubmit">
         <div class="flex flex-col gap-4">
           <FormField v-bind="getFieldProps(v$, 'email')">
@@ -9,10 +9,9 @@
               <InputGroup>
                 <InputGroupAddon><i class="pi pi-envelope"></i></InputGroupAddon>
                 <InputText
-                  v-model="userData.email"
+                  v-model="emailField"
                   :placeholder="t('auth.emailPlaceholder')"
                   :class="inputClass"
-                  autocomplete="username"
                 />
               </InputGroup>
             </template>
@@ -23,29 +22,39 @@
               <InputGroup>
                 <InputGroupAddon><i class="pi pi-lock"></i></InputGroupAddon>
                 <Password
-                  v-model="userData.password"
+                  v-model="passwordField"
                   :placeholder="t('auth.passwordPlaceholder')"
                   :class="inputClass"
-                  :feedback="false"
+                  :feedback="true"
                   toggleMask
                   class="w-full"
-                  autocomplete="current-password"
                 />
               </InputGroup>
             </template>
           </FormField>
 
-          <div class="flex items-center gap-2 mb-4">
-            <Checkbox v-model="userData.remember" :binary="true" inputId="remember" />
-            <label for="remember" class="text-sm">{{ $t('auth.rememberMe') }}</label>
-          </div>
+          <FormField v-bind="getFieldProps(v$, 'confirmPassword')">
+            <template #default="{ inputClass }">
+              <InputGroup>
+                <InputGroupAddon><i class="pi pi-lock"></i></InputGroupAddon>
+                <Password
+                  v-model="confirmPasswordField"
+                  :placeholder="t('auth.confirmPasswordPlaceholder')"
+                  :class="inputClass"
+                  :feedback="false"
+                  toggleMask
+                  class="w-full"
+                />
+              </InputGroup>
+            </template>
+          </FormField>
 
           <div class="flex flex-col gap-2">
             <Button type="submit" :loading="loading" class="w-full">
-              {{ $t('auth.loginButton') }}
+              {{ $t('auth.registerButton') }}
             </Button>
-            <router-link to="/register" class="text-center text-sm text-blue-500">
-              {{ $t('auth.noAccount') }}
+            <router-link to="/login" class="text-center text-sm text-blue-500">
+              {{ $t('auth.haveAccount') }}
             </router-link>
           </div>
         </div>
@@ -57,51 +66,52 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
-import { required, email } from '@/utils/i18n-validators';
-import { useAuth } from '@/composables/useAuth';
+import { required, email, minLength, sameAs } from '@/utils/i18n-validators';
 import { useToast } from 'primevue/usetoast';
 import { useRouter } from 'vue-router';
-import { DEFAULT_ROUTE } from '@/router/routes';
 import { useI18n } from 'vue-i18n';
 import { getFieldProps } from '@/utils/formUtils';
+import { AuthService } from '@/api/auth/auth.service';
 
 const router = useRouter();
 const toast = useToast();
 const { t } = useI18n();
-const auth = useAuth();
 
-const userData = ref({
-  email: '',
-  password: '',
-  remember: false,
-});
-
+const emailField = ref('');
+const passwordField = ref('');
+const confirmPasswordField = ref('');
 const loading = ref(false);
 
 const rules = {
   email: { required, email },
-  password: { required },
+  password: { required, minLength: minLength(6) },
+  confirmPassword: { required, sameAs: sameAs(passwordField) },
 };
 
-const v$ = useVuelidate(rules, userData);
+const v$ = useVuelidate(rules, {
+  email: emailField,
+  password: passwordField,
+  confirmPassword: confirmPasswordField,
+});
 
-const handleSubmit = async () => {
+const handleSubmit = async (): Promise<void> => {
   const isValid = await v$.value.$validate();
   if (!isValid) return;
 
   loading.value = true;
   try {
-    await auth.login(userData.value.email, userData.value.password);
+    await AuthService.register(emailField.value, passwordField.value);
     toast.add({
       severity: 'success',
-      summary: t('auth.loginSuccess'),
+      summary: t('auth.registerSuccess'),
       life: 3000,
     });
-    router.push({ name: DEFAULT_ROUTE });
-  } catch (error: any) {
+    router.push('/');
+  } catch (error) {
     toast.add({
       severity: 'error',
-      summary: t('auth.loginError'),
+      summary: t('auth.registerError'),
+      detail: error instanceof Error ? error.message : 'Unknown error',
       life: 3000,
     });
   } finally {

@@ -41,7 +41,7 @@ export const useFormStore = defineStore('form', () => {
     responsibilities: '',
   });
 
-  const setFormData = (formData: IFormData) => {
+  const setFormData = (formData: IFormData): void => {
     personInfo.value = { ...formData.personInfo };
     jobInfo.value = { ...formData.jobInfo };
   };

@@ -1,6 +1,5 @@
 @import 'primeicons/primeicons.css';
-@import '@/assets/styles/reset.css';
-@import '@/assets/styles/fonts.css';
+@import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 /* Primary and Surface Palettes */
 :root {
@@ -20,7 +19,7 @@
   --p-surface-100: #ebedf5;
   --p-surface-200: #e9eaf0; /* palette */
   --p-surface-300: #d1d3e0;
-  --p-surface-400: #b3b6c9;
+  --p-surface-400: #9ea6b7; /* from maket */
   --p-surface-500: #8b8fa8;
   --p-surface-600: #666b89;
   --p-surface-700: #4a4d64;
@@ -48,7 +47,7 @@
   --p-highlight-focus-color: var(--p-primary-800);
   --p-text-color: var(--p-surface-900);
   --p-text-hover-color: var(--p-surface-900);
-  --p-text-muted-color: var(--p-surface-600);
+  --p-text-muted-color: var(--p-surface-400);
   --p-text-hover-muted-color: var(--p-surface-700);
   --p-error-color: var(--p-error-color);
 }

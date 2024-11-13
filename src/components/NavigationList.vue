@@ -24,7 +24,7 @@ const emit = defineEmits<{
   (e: 'itemClick', item: MenuItem): void;
 }>();
 
-const handleClick = (item: MenuItem) => {
+const handleClick = (item: MenuItem): void => {
   if (item.command) {
     item.command();
   } else {

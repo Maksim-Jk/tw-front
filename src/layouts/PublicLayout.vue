@@ -6,12 +6,12 @@ import { toggleTheme } from '../utils/themeToggle';
 const isDarkTheme = ref(false);
 const { locale } = useI18n();
 
-const handleToggleTheme = () => {
+const handleToggleTheme = (): void => {
   toggleTheme();
   isDarkTheme.value = !isDarkTheme.value;
 };
 
-const toggleLanguage = () => {
+const toggleLanguage = (): void => {
   locale.value = locale.value === 'ru' ? 'en' : 'ru';
 };
 </script>

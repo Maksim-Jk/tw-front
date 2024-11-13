@@ -3,7 +3,7 @@
         bg-primary-100 dark:bg-primary-500/15
         text-primary-700 dark:text-primary-300
         text-sm font-bold py-1 px-2 rounded-[55px] gap-1 uppercase;
-  /* @apply caption-2; */
+  @apply caption-2;
 }
 
 .p-tag-icon {

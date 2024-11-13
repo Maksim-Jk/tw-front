@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 h-full"
+    class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-full"
     :class="sidebarWidth"
   >
     <div class="flex flex-col h-full">
@@ -14,7 +14,7 @@
             :class="logoSize"
             v-if="isExpanded"
           />
-          <Button @click="toggleMenu" class="p-button-text p-button-rounded" size="small">
+          <Button @click="toggleMenu" class="p-button-text p-button-rounded ml-auto" size="small">
             <img
               src="@/assets/roll-left.svg"
               :class="{ 'transform rotate-180': !isExpanded }"
@@ -26,8 +26,8 @@
 
       <!-- Scrollable content -->
       <div
-        class="flex-1 overflow-y-auto transition-opacity duration-300"
-        :class="{ 'opacity-0': !isExpanded, 'opacity-100': isExpanded }"
+        class="flex-1 flex flex-col overflow-hidden"
+        :class="{ hidden: !isExpanded, block: isExpanded }"
       >
         <div class="p-5 flex flex-col gap-5">
           <h2 class="heading-2">Последние сообщения</h2>
@@ -42,15 +42,17 @@
             </div>
             <span class="button-2 text-[--p-text-muted-color]">Добавить новое</span>
           </Button>
-
-          <div class="flex flex-col">
-            <TaskCard v-for="task in tasks" :task="task" />
-          </div>
         </div>
+
+        <ScrollPanel style="height: 330px" class="mx-1">
+          <div class="flex flex-col px-3" v-if="tasks.length > 0">
+            <TaskCard v-for="task in tasks" :task="task" :key="task.id" />
+          </div>
+        </ScrollPanel>
       </div>
 
       <!-- Footer (fixed) -->
-      <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+      <div class="p-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
         <NavigationList
           :items="footerItems"
           :is-expanded="isExpanded"
@@ -62,84 +64,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { toggleTheme } from '@/utils/themeToggle';
-import { useAuth } from '@/composables/useAuth';
 import { FOOTER_ITEMS } from '@/constants/navigation';
 import type { MenuItem } from 'primevue/menuitem';
-import type { Task } from '@/types/task';
+import type { Task } from '@/api/tasks/task.types';
+import { TasksService } from '@/api/tasks/tasks.service';
+import { useSettingsStore } from '@/stores/settings';
+import { TokenService } from '@/services/token.service';
+import { ROUTES } from '@/router/routes';
 
 const router = useRouter();
 const isExpanded = ref(true);
 const isDarkTheme = ref(document.documentElement.classList.contains('dark'));
 const { t, locale } = useI18n();
-const { logout } = useAuth();
 
-const selectedTab = ref({ name: 'Option 1', value: 1 });
-const tabsOptions = ref([
-  { name: 'Option 1', value: 1 },
-  { name: 'Option 2', value: 2 },
-  { name: 'Option 3', value: 3 },
-]);
+const settingsStore = useSettingsStore();
 
-const tasks = ref<Task[]>([
-  {
-    id: '1',
-    title: 'Нужно поменять блоки местами',
-    type: 'Задача',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet...',
-    tags: ['COMPLETED', 'IN_PROGRESS', 'PENDING'],
-    date: new Date(new Date().setDate(new Date().getDate() - 0.5)),
-  },
-  {
-    id: '2',
-    title: 'Добавить новый функционал',
-    type: 'Задача',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet...',
-    tags: ['COMPLETED'],
-    date: new Date(new Date().setDate(new Date().getDate() - 1)),
-  },
-  {
-    id: '3',
-    title: 'Исправить баги в интерфейсе',
-    type: 'Вопрос',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet...',
-    tags: ['COMPLETED'],
-    date: new Date(new Date().setDate(new Date().getDate() - 1)),
-  },
-  {
-    id: '4',
-    title: 'Оптимизировать производительность',
-    type: 'Вопрос',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet...',
-    tags: ['COMPLETED'],
-    date: new Date(new Date().setDate(new Date().getDate() - 2)),
-  },
-  {
-    id: '5',
-    title: 'Обновить документацию',
-    type: 'Задача',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet...',
-    tags: ['COMPLETED'],
-    date: new Date(new Date().setDate(new Date().getDate() - 7)),
-  },
-  {
-    id: '6',
-    title: 'Подготовить презентацию',
-    type: 'Задача',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet...',
-    tags: ['COMPLETED'],
-    date: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-  },
-]);
+const selectedTab = ref({ id: 0, name: t('common.0') });
+const tabsOptions = [
+  { id: 0, name: t('common.0') },
+  ...settingsStore.getSettingsByKey('types')?.map((type) => ({
+    ...type,
+    name: t(`common.${type.id}`),
+  })),
+];
+
+const tasks = ref<Task[]>([]);
+
+const loadTasks = async (typeId?: number): Promise<void> => {
+  try {
+    tasks.value = await TasksService.getTasks(typeId === 0 ? undefined : typeId);
+  } catch (error) {
+    console.error('Ошибка при загрузке задач:', error);
+  }
+};
+
+watch(selectedTab, (newValue) => {
+  loadTasks(newValue.id);
+});
+
+onMounted(() => {
+  loadTasks();
+});
 
 // Computed properties
 const sidebarWidth = computed(() => ({
@@ -155,17 +124,17 @@ const logoSize = computed(() => ({
 const footerItems = computed(() =>
   FOOTER_ITEMS.map((item) => ({
     ...item,
-    label: t(item.translationKey),
+    label: t(`interface.${item.translationKey}`),
     icon: item.label === 'Theme' ? (isDarkTheme.value ? 'pi pi-moon' : 'pi pi-sun') : item.icon,
   }))
 );
 
 // Methods
-const toggleMenu = () => {
+const toggleMenu = (): void => {
   isExpanded.value = !isExpanded.value;
 };
 
-const handleFooterAction = async (item: MenuItem) => {
+const handleFooterAction = async (item: MenuItem): Promise<void> => {
   switch (item.translationKey) {
     case 'theme':
       toggleTheme();
@@ -175,9 +144,13 @@ const handleFooterAction = async (item: MenuItem) => {
       locale.value = locale.value === 'ru' ? 'en' : 'ru';
       break;
     case 'logout':
-      await logout();
-      router.push('/login');
+      TokenService.removeToken();
+      router.push(ROUTES.LOGIN);
       break;
   }
 };
 </script>
+
+<style scoped>
+/* Можно удалить все стили, связанные с .custom-scrollbar */
+</style>

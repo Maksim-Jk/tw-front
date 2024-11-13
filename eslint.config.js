@@ -25,7 +25,6 @@ export default [
 
   {
     rules: {
-      '@typescript-eslint/no-require-imports': 'false',
       'vue/multi-word-component-names': 'error',
       'vue/no-unused-components': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'warn',

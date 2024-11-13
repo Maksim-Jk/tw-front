@@ -1,13 +1,13 @@
 {
-  "pages": {
-    "home": "Home",
-    "form": "Form",
-    "formResult": "Form Submission Result",
-    "formList": "Form List",
-    "formCreate": "Create Form",
-    "formResultDetails": "Form Result Details"
+  "interface": {
+    "theme": "Change Theme",
+    "language": "Change Language",
+    "logout": "Logout"
   },
-  "toggleLanguage": "Change Language",
+  "pages": {
+    "taskCreate": "Create Task",
+    "messages": "Messages"
+  },
   "validations": {
     "required": "This field is required",
     "minLength": "Minimum length: {min} characters",
@@ -20,40 +20,6 @@
     "sameAs": "Value must match {property}"
   },
   "form": {
-    "tabs": {
-      "personalInfo": {
-        "title": "Personal Information",
-        "content": "Enter your personal information"
-      },
-      "jobInfo": {
-        "title": "Job Information",
-        "content": "Enter your job information"
-      }
-    },
-    "fields": {
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "phone": "Phone",
-      "email": "Email",
-      "jobTitle": "Job Title",
-      "company": "Company",
-      "startDate": "Start Date",
-      "location": "Location",
-      "salary": "Salary",
-      "responsibilities": "Responsibilities"
-    },
-    "placeholders": {
-      "firstName": "Enter first name",
-      "lastName": "Enter last name",
-      "phone": "Enter phone number",
-      "email": "Enter email",
-      "jobTitle": "Enter job title",
-      "company": "Enter company name",
-      "startDate": "Choose start date",
-      "location": "Enter location",
-      "salary": "Enter salary",
-      "responsibilities": "Describe responsibilities"
-    },
     "submit": "Submit",
     "submitSuccessTitle": "Successfully Submitted",
     "submitSuccessMessage": "Your form has been successfully submitted.",
@@ -100,5 +66,50 @@
   "routes": {
     "login": "Login",
     "register": "Register"
+  },
+  "task": {
+    "form": {
+      "type": "Type",
+      "priority": "Priority",
+      "title": "Title",
+      "description": "Description",
+      "scope": {
+        "global": "For the whole site",
+        "specific": "On the current page",
+        "specificWarning": "Make sure you are on the page you will create the task on"
+      },
+      "titlePlaceholder": "Enter the task subject",
+      "descriptionPlaceholder": "Describe the task...",
+      "attachFile": "Attach File",
+      "noFileChosen": "No file chosen"
+    },
+    "types": {
+      "1": "Task",
+      "2": "Question"
+    },
+    "flags": {
+      "1": "Urgent",
+      "2": "Important",
+      "3": "Normal",
+      "4": "Low Priority"
+    },
+    "statuses": {
+      "1": "Completed",
+      "2": "In Progress",
+      "3": "Created",
+      "4": "Archived"
+    },
+    "priorities": {
+      "1": "Highest",
+      "2": "High",
+      "3": "Normal",
+      "4": "Low",
+      "5": "Lowest"
+    }
+  },
+  "common": {
+    "0": "All",
+    "1": "Tasks",
+    "2": "Questions"
   }
 }

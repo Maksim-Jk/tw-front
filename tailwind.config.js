@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const primeui = require('tailwindcss-primeui')
+import primeui from 'tailwindcss-primeui';
 
 module.exports = {
   darkMode: ['class', '[data-theme="dark"]'],
@@ -13,4 +13,4 @@ module.exports = {
     extend: {},
   },
   plugins: [primeui],
-}
+};

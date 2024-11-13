@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuth } from '@/composables/useAuth';
-import { DEFAULT_ROUTE, ROUTES, protectedRoutes, publicRoutes } from './routes';
+import { DEFAULT_ROUTE, protectedRoutes, publicRoutes } from './routes';
+import { TokenService } from '@/services/token.service';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
       path: '/',
-      component: () => import('@/layouts/PrivateLayout.vue'),
+      component: (): Promise<typeof import('@/layouts/PrivateLayout.vue')> =>
+        import('@/layouts/PrivateLayout.vue'),
       meta: {
         requiresAuth: true,
       },
@@ -15,7 +16,8 @@ const router = createRouter({
     },
     {
       path: '/',
-      component: () => import('@/layouts/PublicLayout.vue'),
+      component: (): Promise<typeof import('@/layouts/PublicLayout.vue')> =>
+        import('@/layouts/PublicLayout.vue'),
       children: [...publicRoutes],
     },
     {
@@ -25,19 +27,17 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from, next) => {
-  const auth = useAuth();
-  const isAuthenticated = await auth.getCurrentUser();
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const isAuthenticated = TokenService.isTokenValid();
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next(ROUTES.LOGIN);
+  if (requiresAuth && !isAuthenticated) {
+    next('/login');
+  } else if (!requiresAuth && isAuthenticated) {
+    next('/');
+  } else {
+    next();
   }
-
-  if ((to.name === ROUTES.LOGIN || to.name === ROUTES.REGISTER) && isAuthenticated) {
-    next(DEFAULT_ROUTE);
-  }
-
-  next();
 });
 
 export default router;

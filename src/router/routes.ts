@@ -1,7 +1,10 @@
 export enum PROTECTED_ROUTES {
-  FORM_LIST = '/form-list',
-  FORM_CREATE = '/form-create',
-  FORM_RESULT = '/form-result/:id',
+  WELCOME = 'welcome',
+  CREATE_TASK = 'create_task',
+  MESSAGES = 'messages',
+  TASK = 'task_by_id',
+  NOTIFICATIONS = 'notifications',
+  SETTINGS = 'settings',
 }
 
 export enum ROUTES {
@@ -9,41 +12,41 @@ export enum ROUTES {
   REGISTER = '/register',
 }
 
-export const DEFAULT_ROUTE = PROTECTED_ROUTES.FORM_LIST;
+export const DEFAULT_ROUTE = PROTECTED_ROUTES.WELCOME;
 
 export const protectedRoutes = [
   {
-    path: '/form',
+    path: '/task',
     children: [
       {
-        path: 'list',
-        name: PROTECTED_ROUTES.FORM_LIST,
-        component: () => import('@/views/FormList.vue'),
+        path: '/',
+        name: PROTECTED_ROUTES.WELCOME,
+        component: (): Promise<typeof import('@/views/protected/WelcomeView.vue')> =>
+          import('@/views/protected/WelcomeView.vue'),
         meta: {
-          title: 'pages.formList',
-          showInNav: true,
           requiresAuth: true,
         },
       },
       {
         path: 'create',
-        name: PROTECTED_ROUTES.FORM_CREATE,
-        component: () => import('@/views/FormCreate.vue'),
+        name: PROTECTED_ROUTES.CREATE_TASK,
+        component: (): Promise<typeof import('@/views/protected/CreateTaskView.vue')> =>
+          import('@/views/protected/CreateTaskView.vue'),
         meta: {
-          title: 'pages.formCreate',
-          showInNav: true,
+          title: 'pages.taskCreate',
           requiresAuth: true,
         },
       },
-      {
-        path: 'result/:id',
-        name: PROTECTED_ROUTES.FORM_RESULT,
-        component: () => import('@/views/FormResult.vue'),
-        meta: {
-          title: 'pages.formResultDetails',
-          requiresAuth: true,
-        },
-      },
+      // {
+      //   path: 'result/:id',
+      //   name: PROTECTED_ROUTES.FORM_RESULT,
+      //   component: (): Promise<typeof import('@/views/FormResult.vue')> =>
+      //     import('@/views/FormResult.vue'),
+      //   meta: {
+      //     title: 'pages.formResultDetails',
+      //     requiresAuth: true,
+      //   },
+      // },
     ],
   },
 ];
@@ -52,7 +55,8 @@ export const publicRoutes = [
   {
     path: '/login',
     name: ROUTES.LOGIN,
-    component: () => import('@/views/LoginView.vue'),
+    component: (): Promise<typeof import('@/views/public/LoginView.vue')> =>
+      import('@/views/public/LoginView.vue'),
     meta: {
       title: 'routes.login',
     },
@@ -60,7 +64,8 @@ export const publicRoutes = [
   {
     path: '/register',
     name: ROUTES.REGISTER,
-    component: () => import('@/views/RegisterView.vue'),
+    component: (): Promise<typeof import('@/views/public/RegisterView.vue')> =>
+      import('@/views/public/RegisterView.vue'),
     meta: {
       title: 'routes.register',
     },

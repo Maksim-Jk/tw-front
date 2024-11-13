@@ -1,83 +1,111 @@
 <template>
   <div
-    class="task-card pb-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer transition-colors hover:border-none hover:bg-[--p-primary-50] p-[18px] rounded-lg"
+    class="relative task-card p-[18px] hover:rounded-lg border-b border-gray-200 dark:border-gray-700 cursor-pointer transition-colors hover:border-transparent hover:bg-[--p-primary-50]"
   >
     <div class="p-card-header">
       <div class="flex justify-between items-center mb-3">
-        <span class="caption-1 text-[--p-text-muted-color] uppercase">{{ task.type }}</span>
+        <span class="caption-1 text-[--p-text-muted-color] uppercase">{{
+          $t(`task.types.${task.type_id}`)
+        }}</span>
         <div class="body-2">
-          {{ formatDate(task.date) }}
+          {{ formatDate(task.created_at) }}
         </div>
       </div>
-      <div class="mb-3 flex gap-3">
-        <Tag v-for="tag in task.tags" :value="tag" :severity="getStatusSeverity(tag)">
-          <template #icon>
-            <i v-if="getStatusIcon(tag)" :class="[getStatusIcon(tag), 'status-icon']" />
+      <div class="mb-3 flex gap-3 flex-wrap">
+        <Tag
+          :value="$t(`task.statuses.${task.status_id}`)"
+          :severity="getStatusSeverity(task.status_id)"
+        >
+          <template #icon v-if="getStatusIcon(task.status_id)">
+            <i :class="[getStatusIcon(task.status_id), 'status-icon']" />
           </template>
         </Tag>
+        <Tag
+          v-for="tag in task.flag_ids"
+          :key="tag"
+          :value="$t(`task.flags.${tag}`)"
+          :severity="getFlagSeverity(tag)"
+        />
       </div>
 
       <h3 class="mb-3 heading-3">{{ task.title }}</h3>
     </div>
     <div class="p-card-content">
-      <p class="text-gray-700">{{ task.description }}</p>
+      <p class="text-[--p-surface-400] line-clamp-2">{{ task.description }}</p>
     </div>
-    <div class="p-card-footer"></div>
+    <div class="p-card-footer">
+      <div v-if="task.attachments" class="mt-3 flex gap-2 flex-wrap">
+        <div class="flex items-center gap-2 text-[--p-text-muted-color]">
+          <i class="pi pi-file text-[--p-text-muted-color] text-[16px]" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Task, TaskStatus } from '@/types/task';
+import { Task, TaskFlags, TaskStatus } from '@/api/tasks/task.types';
 import { formatDistanceToNow, format, isToday, isYesterday } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { ru, enUS } from 'date-fns/locale';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   task: Task;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
-defineEmits<{
-  (e: 'edit', task: Task): void;
-  (e: 'delete', id: string): void;
-}>();
+const { locale } = useI18n();
 
-const getStatusSeverity = (status: TaskStatus) => {
+const getStatusSeverity = (status: TaskStatus): 'success' | 'info' | 'secondary' => {
   switch (status) {
-    case 'COMPLETED':
+    case TaskStatus.COMPLETED:
       return 'success';
-    case 'IN_PROGRESS':
-      return 'warning';
-    case 'PENDING':
+    case TaskStatus.IN_PROGRESS:
       return 'info';
     default:
       return 'secondary';
   }
 };
 
-const getStatusIcon = (status: TaskStatus) => {
+const getFlagSeverity = (flag: TaskFlags): 'danger' | 'secondary' => {
+  switch (flag) {
+    case TaskFlags.URGENT:
+      return 'danger';
+    default:
+      return 'secondary';
+  }
+};
+
+const getStatusIcon = (status: TaskStatus): string | null => {
   switch (status) {
-    case 'COMPLETED':
+    case TaskStatus.COMPLETED:
       return 'pi pi-check';
-    case 'IN_PROGRESS':
+    case TaskStatus.IN_PROGRESS:
       return 'pi pi-circle-fill';
     default:
       return null;
   }
 };
 
-const formatDate = (date: Date | string) => {
+const formatDate = (date: Date | string): string => {
   const dateObj = new Date(date);
+  const timezoneOffset = dateObj.getTimezoneOffset() * 60000;
+  const localDate = new Date(dateObj.getTime() - timezoneOffset);
+  const currentLocale = locale.value === 'ru' ? ru : enUS;
 
-  if (isToday(dateObj)) {
-    return formatDistanceToNow(dateObj, { locale: ru, addSuffix: true });
+  if (isToday(localDate)) {
+    return formatDistanceToNow(localDate, {
+      locale: currentLocale,
+      addSuffix: true,
+    });
   }
 
-  if (isYesterday(dateObj)) {
-    return `вчера в ${format(dateObj, 'HH:mm')}`;
+  if (isYesterday(localDate)) {
+    return format(localDate, "'вчера в' HH:mm", { locale: currentLocale });
   }
 
-  return format(dateObj, 'dd.MM.yyyy в HH:mm');
+  return format(localDate, 'dd.MM.yyyy в HH:mm', { locale: currentLocale });
 };
 </script>
 

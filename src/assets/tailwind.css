@@ -1,3 +1,5 @@
+@import './styles/fonts.css';
+@import './styles/fonts.css';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import './primevue/tailwind.css';

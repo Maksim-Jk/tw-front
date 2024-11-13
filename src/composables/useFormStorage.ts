@@ -1,11 +1,15 @@
 interface FormData {
   id?: number;
   savedAt?: string;
-  personInfo: Record<string, any>;
-  jobInfo: Record<string, any>;
+  personInfo: Record<string, unknown>;
+  jobInfo: Record<string, unknown>;
 }
 
-export function useFormStorage() {
+export function useFormStorage(): {
+  getSubmittedForms: () => FormData[];
+  saveForm: (formData: FormData) => void;
+  getFormById: (id: number) => FormData | null;
+} {
   const submittedForms: Ref<FormData[]> = ref([]);
 
   const getSubmittedForms = (): FormData[] => {

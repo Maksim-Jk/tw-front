@@ -20,7 +20,7 @@ export const i18n = createI18n({
 });
 
 export class I18nPlugin implements IAppPlugin {
-  register = (app: App) => {
+  register = (app: App): void => {
     app.use(i18n);
   };
 }

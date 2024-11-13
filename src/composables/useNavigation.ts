@@ -8,14 +8,14 @@ interface NavItem {
   name: string;
 }
 
-export const useNavigation = () => {
+export const useNavigation = (): { navItems: ComputedRef<NavItem[]> } => {
   const router = useRouter();
   const { t } = useI18n();
 
   const getNavigationItems = (routes: RouteRecordRaw[], parentPath: string = ''): NavItem[] => {
     const items: NavItem[] = [];
 
-    const processRoute = (route: RouteRecordRaw, currentPath: string) => {
+    const processRoute = (route: RouteRecordRaw, currentPath: string): void => {
       const fullPath = currentPath + '/' + route.path.replace(/^\//, '');
 
       if (route.meta?.showInNav) {
@@ -38,7 +38,7 @@ export const useNavigation = () => {
     return items;
   };
 
-  const navItems = computed(() => getNavigationItems(router.options.routes));
+  const navItems = computed(() => getNavigationItems(router.options.routes as RouteRecordRaw[]));
 
   return {
     navItems,
