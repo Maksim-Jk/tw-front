@@ -21,6 +21,7 @@ export type CreateTask = {
   page_url: string;
   type_id: TaskType;
   priority_id: TaskPriority;
+  project_id: number;
   flag_ids: TaskFlags[];
   attachments?: File[];
 };
@@ -41,9 +42,9 @@ export enum TaskPriority {
 }
 
 export enum TaskStatus {
-  COMPLETED = 1,
+  CREATED = 1,
   IN_PROGRESS = 2,
-  CREATED = 3,
+  COMPLETED = 3,
   ARCHIVED = 4,
 }
 

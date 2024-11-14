@@ -1,6 +1,7 @@
 export enum PROTECTED_ROUTES {
   WELCOME = 'welcome',
   CREATE_TASK = 'create_task',
+  EDIT_TASK = 'edit_task',
   MESSAGES = 'messages',
   TASK = 'task_by_id',
   NOTIFICATIONS = 'notifications',
@@ -37,16 +38,16 @@ export const protectedRoutes = [
           requiresAuth: true,
         },
       },
-      // {
-      //   path: 'result/:id',
-      //   name: PROTECTED_ROUTES.FORM_RESULT,
-      //   component: (): Promise<typeof import('@/views/FormResult.vue')> =>
-      //     import('@/views/FormResult.vue'),
-      //   meta: {
-      //     title: 'pages.formResultDetails',
-      //     requiresAuth: true,
-      //   },
-      // },
+      {
+        path: 'edit/:id',
+        name: PROTECTED_ROUTES.EDIT_TASK,
+        component: (): Promise<typeof import('@/views/protected/EditTaskView.vue')> =>
+          import('@/views/protected/EditTaskView.vue'),
+        meta: {
+          title: 'pages.taskEdit',
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];

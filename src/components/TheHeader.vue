@@ -72,6 +72,8 @@ import { ref } from 'vue';
 import { useRouter, type NavigationFailure } from 'vue-router';
 import { TokenService } from '@/services/token.service';
 import { PROTECTED_ROUTES, ROUTES } from '@/router/routes';
+import { useI18n } from 'vue-i18n';
+import { toggleTheme } from '@/utils/themeToggle';
 
 const router = useRouter();
 const notificationMenu = ref();
@@ -101,11 +103,28 @@ const notificationItems = [
   },
 ];
 
+const { t, locale } = useI18n();
+const isDarkTheme = ref(document.documentElement.classList.contains('dark'));
+
 const profileItems = [
   {
     label: userStore.state.name,
     icon: 'pi pi-user',
     command: (): Promise<void | NavigationFailure> => router.push('/profile'),
+  },
+  {
+    label: 'Сменить язык',
+    icon: 'pi pi-language',
+    command: (): void => {
+      locale.value = locale.value === 'ru' ? 'en' : 'ru';
+    },
+  },
+  {
+    label: 'Сменить тему',
+    icon: isDarkTheme.value ? 'pi pi-moon' : 'pi pi-sun',
+    command: (): void => {
+      toggleTheme();
+    },
   },
   {
     label: 'Настройки',

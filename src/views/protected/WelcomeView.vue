@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8 max-w-7xl mx-auto">
+  <div class="max-w-7xl mx-auto">
     <!-- Верхний баннер с приветствием -->
     <div class="overflow-hidden rounded-2xl pt-8 relative">
       <img
@@ -18,11 +18,15 @@
             Вы хотите задать вопрос или поставить задачу?
           </p>
         </div>
-        <img src="@/assets/graphics/leaves.svg" alt="Leaves" class="absolute bottom-0 left-0" />
+        <img
+          src="@/assets/graphics/leaves.svg"
+          alt="Leaves"
+          class="absolute bottom-0 left-0 animate-sway"
+        />
         <img
           src="@/assets/graphics/person.svg"
           alt="Person"
-          class="absolute bottom-0 right-0 z-20"
+          class="absolute bottom-0 right-0 z-20 animate-sway"
         />
       </div>
     </div>
@@ -57,3 +61,20 @@ import { useUserStore } from '@/stores/userStore/userStore';
 
 const userStore = useUserStore();
 </script>
+
+<style scoped>
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.animate-sway {
+  animation: sway 3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+</style>
