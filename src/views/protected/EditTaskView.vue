@@ -1,5 +1,5 @@
 <template>
-  <TaskForm mode="edit" :id="id" :key="id" :task="taskData" />
+  <TaskForm v-if="taskData" mode="edit" :id="id" :key="id" :task="taskData" />
 </template>
 
 <script setup lang="ts">
@@ -8,7 +8,7 @@ import { useRoute, onBeforeRouteUpdate } from 'vue-router';
 
 const route = useRoute();
 const id = ref(route.params.id);
-const taskData = ref({});
+const taskData = ref(null);
 
 const loadTask = async (taskId: string) => {
   try {

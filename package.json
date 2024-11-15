@@ -24,7 +24,7 @@
     "jwt-decode": "^4.0.0",
     "pinia": "^2.2.4",
     "primeicons": "^7.0.0",
-    "primevue": "^4.2.1",
+    "primevue": "^4.2.2",
     "quill": "^2.0.2",
     "tailwindcss-primeui": "^0.3.4",
     "unplugin-auto-import": "^0.18.3",

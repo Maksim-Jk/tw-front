@@ -7,6 +7,7 @@
   "pages": {
     "taskCreate": "Создать задачу",
     "taskEdit": "Редактировать задачу",
+    "taskMessages": "Сообщения",
     "messages": "Сообщения"
   },
   "validations": {
@@ -113,5 +114,10 @@
     "0": "Все",
     "1": "Задачи",
     "2": "Вопросы"
+  },
+  "table": {
+    "pageReport": "{first}-{last} из {totalRecords}",
+    "noData": "Нет данных",
+    "noDataDescription": "Данные не найдены"
   }
 }

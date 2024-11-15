@@ -77,3 +77,10 @@ html {
   background-color: var(--p-primary-contrast-color);
   color: var(--p-text-color);
 }
+
+.popover-filter:after,
+.popover-filter:before,
+.popover-menu:before,
+.popover-menu:after {
+  display: none !important;
+}

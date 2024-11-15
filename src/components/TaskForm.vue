@@ -135,6 +135,12 @@
           </template>
         </FileUpload>
 
+        <!-- Добавляем кнопки для режима редактирования -->
+        <div v-if="props.mode === 'edit' && taskData.file" class="flex gap-2">
+          <Button icon="pi pi-download" severity="secondary" @click="downloadAttachment" />
+          <Button icon="pi pi-trash" severity="danger" @click="deleteAttachment" />
+        </div>
+
         <Button type="submit" label="Отправить" class="w-32" />
       </div>
     </form>
@@ -163,6 +169,7 @@ const { t } = useI18n();
 
 const props = defineProps<{
   mode: 'create' | 'edit';
+  id?: string;
   task?: Task;
 }>();
 
@@ -173,7 +180,7 @@ const taskData = ref({
   priority_id: null,
   scope: 'global',
   flag_ids: [],
-  attachments: [] as File[],
+  file: null as File | null,
 });
 
 const pageUrlDto = ref(null);
@@ -224,7 +231,7 @@ const handleSubmit = async (): Promise<void> => {
   }
 
   if (props.mode === 'edit') {
-    await TasksService.updateTask(props.id as string, {
+    await TasksService.updateTask(String(props.id), {
       ...taskData.value,
       page_url: pageUrl.value,
       project_id: settingsStore.getSettingsByKey('project_id') as number,
@@ -244,8 +251,8 @@ const handleSubmit = async (): Promise<void> => {
 };
 
 const onFileSelect = (event: { files: File[] }): void => {
-  const uploadedFiles = event.files;
-  taskData.value.attachments.push(...uploadedFiles);
+  const [uploadedFile] = event.files;
+  taskData.value.file = uploadedFile;
 };
 
 const editorRef = ref(null);
@@ -257,7 +264,7 @@ const setEditorContent = (content: string) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   console.log('onMounted');
 
   if (props.mode === 'edit') {
@@ -269,7 +276,7 @@ onMounted(() => {
         priority_id: props.task.priority_id,
         scope: getScope(props.task.page_url),
         flag_ids: props.task.flag_ids,
-        attachments: [] as File[],
+        file: props.task.file,
       };
 
       setTimeout(() => {
@@ -293,6 +300,14 @@ const getScope = (url: string): string => {
   }
 
   return null;
+};
+
+const downloadAttachment = () => {
+  // Логика скачивания файла
+};
+
+const deleteAttachment = () => {
+  taskData.value.file = null;
 };
 </script>
 

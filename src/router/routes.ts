@@ -17,14 +17,24 @@ export const DEFAULT_ROUTE = PROTECTED_ROUTES.WELCOME;
 
 export const protectedRoutes = [
   {
+    path: '/',
+    name: PROTECTED_ROUTES.WELCOME,
+    component: (): Promise<typeof import('@/views/protected/WelcomeView.vue')> =>
+      import('@/views/protected/WelcomeView.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/task',
     children: [
       {
-        path: '/',
-        name: PROTECTED_ROUTES.WELCOME,
-        component: (): Promise<typeof import('@/views/protected/WelcomeView.vue')> =>
-          import('@/views/protected/WelcomeView.vue'),
+        path: 'messages',
+        name: PROTECTED_ROUTES.MESSAGES,
+        component: (): Promise<typeof import('@/views/protected/TableTasksView.vue')> =>
+          import('@/views/protected/TableTasksView.vue'),
         meta: {
+          title: 'pages.taskMessages',
           requiresAuth: true,
         },
       },
@@ -43,6 +53,16 @@ export const protectedRoutes = [
         name: PROTECTED_ROUTES.EDIT_TASK,
         component: (): Promise<typeof import('@/views/protected/EditTaskView.vue')> =>
           import('@/views/protected/EditTaskView.vue'),
+        meta: {
+          title: 'pages.taskEdit',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'test',
+        name: 'test',
+        component: (): Promise<typeof import('@/views/protected/testView.vue')> =>
+          import('@/views/protected/testView.vue'),
         meta: {
           title: 'pages.taskEdit',
           requiresAuth: true,

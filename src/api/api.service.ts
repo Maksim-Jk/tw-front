@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance } from 'axios';
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import type { IResponse, QueryParams } from './global.types';
 import { TokenService } from '@/services/token.service';
 import ToastEventBus from 'primevue/toasteventbus';
@@ -47,23 +47,31 @@ api.interceptors.response.use(
 );
 
 const apiService = {
-  async get<T>(url: string, params?: QueryParams): Promise<IResponse<T>> {
-    const response = await api.get<IResponse<T>>(url, { params });
+  async get<T>(url: string, config?: AxiosRequestConfig<unknown>): Promise<IResponse<T>> {
+    const response = await api.get<IResponse<T>>(url, config);
     return response.data;
   },
 
-  async post<T>(url: string, data?: unknown, params?: QueryParams): Promise<IResponse<T>> {
-    const response = await api.post<IResponse<T>>(url, data, { params });
+  async post<T>(
+    url: string,
+    data: unknown,
+    config?: AxiosRequestConfig<unknown>
+  ): Promise<IResponse<T>> {
+    const response = await api.post<IResponse<T>>(url, data, config);
     return response.data;
   },
 
-  async put<T>(url: string, data?: unknown, params?: QueryParams): Promise<IResponse<T>> {
-    const response = await api.put<IResponse<T>>(url, data, { params });
+  async put<T>(
+    url: string,
+    data: unknown,
+    config?: AxiosRequestConfig<unknown>
+  ): Promise<IResponse<T>> {
+    const response = await api.put<IResponse<T>>(url, data, config);
     return response.data;
   },
 
-  async delete<T>(url: string, params?: QueryParams): Promise<IResponse<T>> {
-    const response = await api.delete<IResponse<T>>(url, { params });
+  async delete<T>(url: string, config?: AxiosRequestConfig<unknown>): Promise<IResponse<T>> {
+    const response = await api.delete<IResponse<T>>(url, config);
     return response.data;
   },
 };

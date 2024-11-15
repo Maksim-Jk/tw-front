@@ -6,3 +6,9 @@ export interface IResponse<T> {
 export interface QueryParams {
   [key: string]: string | number | boolean | undefined;
 }
+
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}

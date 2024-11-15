@@ -2,6 +2,7 @@
   "interface": {
     "theme": "Change Theme",
     "language": "Change Language",
+    "taskMessages": "Messages",
     "logout": "Logout"
   },
   "pages": {
@@ -113,5 +114,10 @@
     "0": "All",
     "1": "Tasks",
     "2": "Questions"
+  },
+  "table": {
+    "pageReport": "{first}-{last} of {totalRecords}",
+    "noData": "No data",
+    "noDataDescription": "No data found"
   }
 }

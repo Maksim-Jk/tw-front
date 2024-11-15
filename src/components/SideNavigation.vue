@@ -30,18 +30,23 @@
         :class="{ hidden: !isExpanded, block: isExpanded }"
       >
         <div class="p-5 flex flex-col gap-5">
-          <h2 class="heading-2">Последние сообщения</h2>
-
+          <div class="flex items-center justify-between">
+            <h2 class="heading-2">Последние сообщения</h2>
+            <RouterLink :to="{ name: PROTECTED_ROUTES.MESSAGES }">
+              <span class="button-2 text-[--p-text-muted-color]">Смотреть все</span>
+            </RouterLink>
+          </div>
           <SelectButton v-model="selectedTab" optionLabel="name" :options="tabsOptions" />
 
-          <Button
-            class="w-full flex items-center gap-2 justify-start p-button-secondary min-h-[41px]"
+          <RouterLink
+            :to="{ name: PROTECTED_ROUTES.CREATE_TASK }"
+            class="w-full flex items-center gap-2 p-3 rounded-lg bg-[--p-surface-50] hover:bg-[--p-surface-100]"
           >
             <div class="w-6 h-6 bg-[--p-primary-500] rounded-full flex items-center justify-center">
               <i class="pi pi-plus text-white text-xs" />
             </div>
             <span class="button-2 text-[--p-text-muted-color]">Добавить новое</span>
-          </Button>
+          </RouterLink>
         </div>
 
         <ScrollPanel style="height: 494px" class="mx-1">
@@ -60,6 +65,7 @@ import { useI18n } from 'vue-i18n';
 import type { Task } from '@/api/tasks/task.types';
 import { TasksService } from '@/api/tasks/tasks.service';
 import { useSettingsStore } from '@/stores/settings';
+import { PROTECTED_ROUTES } from '@/router/routes';
 
 const isExpanded = ref(true);
 const { t } = useI18n();
@@ -79,7 +85,8 @@ const tasks = ref<Task[]>([]);
 
 const loadTasks = async (typeId?: number): Promise<void> => {
   try {
-    tasks.value = await TasksService.getTasks(typeId === 0 ? undefined : typeId);
+    const response = await TasksService.getTasks(typeId === 0 ? undefined : typeId);
+    tasks.value = response.items;
   } catch (error) {
     console.error('Ошибка при загрузке задач:', error);
   }

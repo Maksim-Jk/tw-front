@@ -12,18 +12,26 @@ export interface Task {
   project_id: number;
   created_by: number;
   updated_by: number;
-  attachments?: boolean;
+  file?: File | null;
+}
+
+export interface TaskResponse {
+  items: Task[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 export type CreateTask = {
   title: string;
   description: string;
+  type_id: number;
+  priority_id: number;
   page_url: string;
-  type_id: TaskType;
-  priority_id: TaskPriority;
   project_id: number;
-  flag_ids: TaskFlags[];
-  attachments?: File[];
+  flag_ids?: number[];
+  file?: File | null;
 };
 
 export enum TaskFlags {
